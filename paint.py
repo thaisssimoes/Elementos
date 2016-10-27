@@ -1,40 +1,52 @@
 import pygame
 import sys
-import random
 
 pygame.init()
 
 screen = pygame.display.set_mode((1240,1080))
-elementos = {"h": (255,0,0), "o": (0,255,0), "a": (0,0,255), "pb": (122,122,155)}
-teclas={"a": pygame.K_a, "o": pygame.K_o, "h": pygame.K_h}
+elementos = {frozenset("h"): (255,0,0), frozenset("o"): (0,255,0), frozenset("a"): (0,0,255), frozenset(["p", "b"]): (122,122,155)}
 
-y=50
-x=50
+pressed_keys = set()
+is_pintando = False
+
+
+
+def desenhar_circulo():
+    try:
+        key = frozenset(pressed_keys)
+        cor = elementos[key]
+    except KeyError:
+        cor = elementos['a']
+    pygame.draw.circle(screen, cor, pygame.mouse.get_pos(), 20)
+    pygame.display.update()
+
+def devo_pintar():
+    return is_pintando and pressed_keys
+
+
 
 while (True):
     for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
 
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+        elif event.type == pygame.KEYDOWN:
+            tecla = pygame.key.name(event.key)
+            pressed_keys.add(tecla)
 
-            elif event.type == pygame.KEYDOWN:
-                for tecla in teclas:
-                    if event.key == teclas[tecla]:
-                        pygame.draw.circle(screen, elementos[tecla], pygame.mouse.get_pos(), 20)
-                        pygame.display.update()
+        elif event.type == pygame.KEYUP:
+            tecla = pygame.key.name(event.key)
+            pressed_keys.remove(tecla)
 
-            elif event.type== pygame.MOUSEBUTTONDOWN:
-                for tecla in teclas:
-                    pygame.draw.circle(screen, elementos[tecla], pygame.mouse.get_pos(), 20)
-                    pygame.display.update()
+        elif event.type== pygame.MOUSEBUTTONDOWN:
+            is_pintando = True
+            if devo_pintar():
+                desenhar_circulo()
 
-            elif event.type== pygame.MOUSEBUTTONUP:
-                for tecla in teclas:
-                    pygame.draw.circle(screen, elementos[tecla], pygame.mouse.get_pos(), 20)
-                    pygame.display.update()
+        elif event.type== pygame.MOUSEBUTTONUP:
+            is_pintando = False
 
-            elif event.type == pygame.MOUSEMOTION:
-                for tecla in teclas:
-                    pygame.draw.circle(screen, elementos[tecla], pygame.mouse.get_pos(), 20)
-                    pygame.display.update()
+        elif event.type == pygame.MOUSEMOTION:
+            if devo_pintar():
+                desenhar_circulo()
