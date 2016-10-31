@@ -1,11 +1,18 @@
 import pygame
 import sys
 
+
+
+class Elem(frozenset):
+    def __str__(self):
+        return ''.join(e for e in self)
+
+
 pygame.init()
 
 screen = pygame.display.set_mode((1240, 1080))
-elementos = {frozenset("h"): (255, 0, 0), frozenset("o"): (0, 255, 0), frozenset("a"): (0, 0, 255),
-             frozenset(["p", "b"]): (122, 122, 155)}
+elementos = {Elem("h"): (255, 0, 0), Elem("o"): (0, 255, 0), Elem("a"): (0, 0, 255),
+             Elem(["p", "b"]): (122, 122, 155)}
 pygame.font = pygame.font.SysFont('Arial', 25)
 
 keys = set()
@@ -13,15 +20,19 @@ LEFT=1
 RIGHT=3
 
 def desenhar_circulo():
+    key = Elem(keys)
     try:
-        key = frozenset(keys)
         cor = elementos[key]
     except KeyError:
-        cor = elementos[frozenset(["a"])]
+        key = Elem("a")
+        cor = elementos[key]
 
     x, y = pygame.mouse.get_pos()
+
+    siglas=pygame.font.render(str(key), True, (255, 255, 255))
+
     pygame.draw.circle(screen, cor, pygame.mouse.get_pos(), 20)
-    screen.blit(pygame.font.render(str(key), True, (255, 255, 255)), (x - 6, y - 14))
+    screen.blit(siglas, (x-13, y-15))
     pygame.display.update()
 
 
