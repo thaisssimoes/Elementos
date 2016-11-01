@@ -14,9 +14,12 @@ class elemento():
                           Elem("o"): (0, 255, 0),
                           Elem("a"): (0, 0, 255),
                           Elem(["p", "b"]): (122, 122, 155),
-                          Elem(["u", "u", "s"]): (125, 210, 130)}
+                          Elem(["u", "u", "s"]): (125, 210, 130),
+                          Elem("v"): (100, 140, 173),
+                          Elem(["t","e"]): (89, 115, 220),
+                          Elem(["a","s"]): (220, 205, 2)}
 
-        pygame.font = pygame.font.SysFont('Arial', 25)
+        pygame.font = pygame.font.SysFont('Calibri', 25)
         self.keys = []
 
         self.RADIUS = 30
