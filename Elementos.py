@@ -12,14 +12,14 @@ class elemento():
         self.screen = pygame.display.set_mode((1240, 1080))
         self.elementos = {Elem("h"): (255, 0, 0),
                           Elem("o"): (0, 255, 0),
-                          Elem("a"): (0, 0, 255),
+                          Elem("i"): (0, 0, 255),
                           Elem(["p", "b"]): (122, 122, 155),
                           Elem(["u", "u", "s"]): (125, 210, 130),
                           Elem("v"): (100, 140, 173),
                           Elem(["t","e"]): (89, 115, 220),
                           Elem(["a","s"]): (220, 205, 2)}
 
-        pygame.font = pygame.font.SysFont('Calibri', 25)
+        pygame.font = pygame.font.SysFont('Verdana', 25)
         self.keys = []
 
         self.RADIUS = 30
@@ -29,7 +29,7 @@ class elemento():
         try:
             cor = self.elementos[self.key]
         except KeyError:
-            self.key = Elem("a")
+            self.key = Elem("i")
             cor = self.elementos[self.key]
 
         self.x, self.y = pygame.mouse.get_pos()
@@ -38,6 +38,6 @@ class elemento():
         pygame.display.update()
 
     def escrever_elemento(self):
-        self.siglas = pygame.font.render(str(self.key), True, (255, 255, 255))
+        self.siglas = pygame.font.render(str(self.key).capitalize(), True, (255, 255, 255))
         self.sigla = self.siglas.get_rect()
         self.screen.blit(self.siglas, (self.x-self.sigla.centerx, self.y-self.sigla.centery))
